@@ -7,6 +7,13 @@ struct siswa{
     string kelas;
     string jurusan;
 };
+
+struct guru{
+    string nama;
+    string npsn;
+    string mapelpengampu;
+}; 
+
 int totaldata = 100;
 void pilmenu();
 void datassw();
