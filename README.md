@@ -1,1 +1,1 @@
-# management_sekolah
+# management-sekolah
