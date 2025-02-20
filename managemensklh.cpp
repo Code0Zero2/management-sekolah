@@ -11,7 +11,7 @@ struct siswa{
 struct guru{
     string nama;
     string npsn;
-    string mapelpengampu;
+    string mapeldigampu;
 }; 
 
 int totaldata = 100;
@@ -19,28 +19,63 @@ void pilmenu();
 void datassw();
 void datagru();
 int pilmain;
+bool ulang;
+char balik;
 
 int main(){
-    cout << "-------------------\n";
-    cout << "selamat datang di SekolahKu\n\n";
-    cout << "1. Data siswa\n";
-    cout << "2. Data guru\n";
-    cout << "3. exit\n";
-    cout << "masukkan pilihan : ";
-    pilmenu();   
+    do{
+        cout << "-------------------\n";
+        cout << "selamat datang di SekolahKu\n\n";
+        cout << "1. Data siswa\n";
+        cout << "2. Data guru\n";
+        cout << "3. exit\n";
+        cout << "masukkan pilihan : ";
+        cin >> pilmain;
+        switch(pilmain){
+            case 1 :
+                datassw();
+            break;
+            case 2 :
+                datagru();
+            break;
+            case 3 :
+                cout << "Terimakasih Sudah Menggunakan SekolahKu\n";
+                system("exit");
+            break;
+            default :
+                cout << "Pilihan tidak valid\n";
+                cout << "Silahkan mengulang\n";
+                system("pause");
+            break;
+        }
+        if(pilmain == 3){
+            ulang = false;
+        } else if(pilmain > 3) {
+            ulang = true;
+        } else {
+            cout << "\nApakah Anda ingin kembali ke menu utama?(y/n) : ";
+            cin >> balik;
+            if(balik == 'y'){
+                ulang = true;
+            } else {
+                ulang = false;
+                cout << "Terimakasih sudah menggunakan platform ini";
+            }
+        }
+    }while(ulang);
+    return 0;
 }
 
 void pilmenu(){
-    cin >> pilmain;
     if(pilmain == 1){
-        cout << "---- Siswa ----\n";
-        cout << "1. menambahkan data siswa\n";
-        cout << "2. menampilkan data siswa\n";
+        
+    } else if(pilmain == 2){
+        cout << "---- Guru ----\n";
+        cout << "1. menambahkan data guru\n";
+        cout << "2. menampilkan data guru\n";
         cout << "3. exit\n";
         cout << "masukkan pilihan";
-        datassw();
-    } else if(pilmain == 2){
-
+        datagru();
     } else {
         cout << "Terimakasih Sudah Menggunakan SekolahKu\n";
         system("exit");
@@ -51,6 +86,11 @@ void datassw(){
     int tambahdata1 = 0;
     siswa datasiswa[totaldata];
     int pilssw, nbh;
+    cout << "---- Siswa ----\n";
+    cout << "1. menambahkan data siswa\n";
+    cout << "2. menampilkan data siswa\n";
+    cout << "3. exit\n";
+    cout << "masukkan pilihan";
     cin >> pilssw;
     switch(pilssw){
         case 1 :
@@ -80,10 +120,14 @@ void datassw(){
                 cout << "masukkan nisn : " << datasiswa[i].nisn << endl;
                 cout << "masukkan kelas : " << datasiswa[i].kelas << endl;
                 cout << "masukkan jurusan : " << datasiswa[i].jurusan << endl;
-            }  
+            }
         break;
+        case 3 :
+            cout << "terimakasih";
         default :
-        system("pause");
+            cout << "input salah\n";
+            cout << "silahkan kembali ke menu utama\n";
+            system("pause");
         break;
     }
-}
+} 
