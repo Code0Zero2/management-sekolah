@@ -19,6 +19,7 @@ void pilmenu();
 void datassw();
 void mengulang();
 void datagru();
+void rapor();
 int pilmain;
 bool ulang;
 char balik;
@@ -85,6 +86,7 @@ void datassw(){
         cout << "---- Siswa ----\n";
         cout << "1. menambahkan data siswa\n";
         cout << "2. menampilkan data siswa\n";
+        cout << "2. data rapor siswa\n";
         cout << "3. kembali ke menu utama\n";
         cout << "4. exit\n";
         cout << "masukkan pilihan : ";
@@ -219,7 +221,9 @@ void datagru(){
     }while(ulang);
 }
 
+void rapor(){
 
+}
 
 
 void mengulang(){
