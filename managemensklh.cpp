@@ -18,7 +18,7 @@ int totaldata = 100;
 void pilmenu();
 void datassw();
 void mengulang();
-//void datagru();
+void datagru();
 int pilmain;
 bool ulang;
 char balik;
@@ -38,7 +38,7 @@ int main(){
                 datassw();
             break;
             case 2 :
-                //datagru();
+                datagru();
             break;
             case 3 :
                 cout << "Terimakasih Sudah Menggunakan SekolahKu\n";
@@ -69,7 +69,7 @@ void pilmenu(){
         cout << "2. menampilkan data guru\n";
         cout << "3. kembali ke menu utama\n";
         cout << "4. exit\n";
-        cout << "masukkan pilihan";
+        cout << "masukkan pilihan : ";
         //datagru();
     } else {
         cout << "Terimakasih Sudah Menggunakan SekolahKu\n";
@@ -87,7 +87,7 @@ void datassw(){
         cout << "2. menampilkan data siswa\n";
         cout << "3. kembali ke menu utama\n";
         cout << "4. exit\n";
-        cout << "masukkan pilihan";
+        cout << "masukkan pilihan : ";
         cin >> pilssw;
         switch(pilssw){
             case 1 :
@@ -128,7 +128,7 @@ void datassw(){
             break;
             default :
                 cout << "input salah\n";
-                cout << "silahkan kembali ke menu utama\n";
+                cout << "silahkan kembali ke menu siswa\n";
                 system("pause");
             break;
         }
@@ -159,7 +159,7 @@ void datagru(){
         cout << "2. menampilkan data gurun\n";
         cout << "3. kembali ke menu utama\n";
         cout << "4. exit\n";
-        cout << "masukkan pilihan";
+        cout << "masukkan pilihan : ";
         cin >> pilgru;
         switch(pilgru){
             case 1 :
@@ -181,7 +181,7 @@ void datagru(){
                 }
             break;
             case 2 :
-                cout << "Data Siswa\n";
+                cout << "Data guru\n";
                 for(int i = 0; i < tambahdata2; i++){
                     cout << "masukkan nama : " << dataguru[i].nama << endl ;
                     cout << "masukkan npsn : " << dataguru[i].npsn << endl;
@@ -198,7 +198,7 @@ void datagru(){
             break;
             default :
                 cout << "input salah\n";
-                cout << "silahkan kembali ke menu utama\n";
+                cout << "silahkan kembali ke menu guru\n";
                 system("pause");
             break;
         }
