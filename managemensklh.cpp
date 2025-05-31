@@ -45,6 +45,8 @@ void userMenu();
 void cetakNilai();
 void tampilSemuaSiswaMipa();
 void tampilSemuaSiswaIps();
+void hapusDataSiswa();
+void hapusDataGuru();
 
 int main(){
     int pilmain;
@@ -106,10 +108,12 @@ void adminMenu(){
     do{
         system("cls");
         cout << "---- Admin ----\n";
-        cout << "1. menambahkan data siswa\n";
-        cout << "2. menambahkan data guru\n";\
-        cout << "3. kembali ke login menu \n";
-        cout << "4. exit\n";
+        cout << "1. Menambahkan data siswa\n";
+        cout << "2. Menambahkan data guru\n";
+        cout << "3. Menghapus data siswa\n";
+        cout << "4. Menghapus data guru\n";
+        cout << "5. Kembali ke login menu \n";
+        cout << "6. Exit\n";
         cout << "Masukkan pilihan : ";
         cin >> pilmain;
         switch (pilmain){
@@ -125,9 +129,15 @@ void adminMenu(){
                 tmbhgru(tmbh);
             break;
             case 3 :
-                return;
+                hapusDataSiswa();
             break;
             case 4 :
+                hapusDataGuru();
+            break;
+            case 5 :
+                return;
+            break;
+            case 6 :
                 cout << "Terimakasih Sudah Menggunakan E-rapor\n";
                 exit(0);
             break;
@@ -137,7 +147,7 @@ void adminMenu(){
                 system("pause");
             break;
         }
-    } while (pilmain !=4);
+    } while (pilmain !=6);
 }
 
 void userMenu(){
@@ -549,6 +559,137 @@ void tampilSemuaSiswaIps(){
         }
     }
     cout << setw(101) << setfill('=') << "\n" << setfill(' ') << endl;
+}
+
+void hapusDataSiswa() {
+    tarikData(&jumlahdata, &jumlahdataguru); // Pastikan data terbaru sudah ditarik
+    
+    if (jumlahdata == 0) {
+        cout << "Tidak ada data siswa.\n";
+        system("pause");
+        return;
+    }
+
+    // Tampilkan daftar siswa
+    cout << "\n==== DAFTAR DATA SISWA ====\n";
+    cout << "============================================================\n";
+    cout << "| " << left << setw(3) << "No"  
+         << "| " << setw(20) << "Nama" 
+         << "| " << setw(10) << "NISN"
+         << "| " << setw(8) << "Kelas"
+         << "| " << setw(8) << "Jurusan" << "|\n";
+    cout << "------------------------------------------------------------\n";
+    
+    for(int i = 0; i < jumlahdata; i++) {
+        cout << "| " << left << setw(3) << i+1  
+             << "| " << setw(20) << datasiswa[i].nama 
+             << "| " << setw(10) << datasiswa[i].nisn
+             << "| " << setw(8) << datasiswa[i].kelas
+             << "| " << setw(8) << datasiswa[i].jurusan << "|\n";
+    }
+    cout << "============================================================\n";
+
+    cout << "\nMasukkan nomor data siswa yang ingin dihapus (0 untuk batal): ";
+    int nomor;
+    cin >> nomor;
+
+    if (nomor < 1 || nomor > jumlahdata) {
+        cout << "Penghapusan dibatalkan.\n";
+        system("pause");
+        return;
+    }
+
+    // Geser data setelah yang dihapus
+    for(int i = nomor-1; i < jumlahdata-1; i++) {
+        datasiswa[i] = datasiswa[i+1];
+    }
+    jumlahdata--;
+
+    // Tulis ulang seluruh data ke file
+    ofstream file(siswaData);
+    if (!file.is_open()) {
+        cout << "Gagal membuka file data siswa.\n";
+        system("pause");
+        return;
+    }
+
+    for(int i = 0; i < jumlahdata; i++) {
+        file << gantiSpasi(datasiswa[i].nama) << " "
+             << datasiswa[i].nisn << " "
+             << datasiswa[i].kelas << " "
+             << datasiswa[i].jurusan << " "
+             << datasiswa[i].nilai1 << " "
+             << datasiswa[i].nilai2 << " "
+             << datasiswa[i].nilai3 << endl;
+    }
+
+    file.close();
+    cout << "Data siswa berhasil dihapus.\n";
+    system("pause");
+}
+
+void hapusDataGuru(){
+    tarikData(&jumlahdata, &jumlahdataguru); // Pastikan data terbaru sudah ditarik
+    
+    if (jumlahdataguru == 0) {
+        cout << "Tidak ada data guru.\n";
+        system("pause");
+        return;
+    }
+
+    // Tampilkan daftar guru
+    cout << "\n==== DAFTAR DATA GURU ====\n";
+    cout << "======================================================================\n";
+    cout << "| " << left << setw(3) << "No"  
+         << "| " << setw(20) << "Nama" 
+         << "| " << setw(10) << "NPSN"
+         << "| " << setw(15) << "Mata Pelajaran"
+         << "| " << setw(11) << "Wali Kelas" << "|\n";
+    cout << "----------------------------------------------------------------------\n";
+    
+    for(int i = 0; i < jumlahdataguru; i++) {
+        cout << "| " << left << setw(3) << i+1  
+             << "| " << setw(20) << dataguru[i].nama 
+             << "| " << setw(10) << dataguru[i].npsn
+             << "| " << setw(15) << dataguru[i].mapel
+             << "| " << setw(11) << dataguru[i].waliKls << "|\n";
+    }
+    cout << "======================================================================\n";
+
+    cout << "\nMasukkan nomor data guru yang ingin dihapus (0 untuk batal): ";
+    int nomor;
+    cin >> nomor;
+
+    if (nomor < 1 || nomor > jumlahdataguru) {
+        cout << "Penghapusan dibatalkan.\n";
+        system("pause");
+        return;
+    }
+
+    // Geser data setelah yang dihapus
+    for(int i = nomor-1; i < jumlahdataguru-1; i++) {
+        dataguru[i] = dataguru[i+1];
+    }
+    jumlahdataguru--;
+
+    // Tulis ulang seluruh data ke file
+    ofstream file(guruData);
+    if (!file.is_open()) {
+        cout << "Gagal membuka file data guru.\n";
+        system("pause");
+        return;
+    }
+
+    for(int i = 0; i < jumlahdataguru; i++) {
+        file << gantiSpasi(dataguru[i].nama) << " "
+             << dataguru[i].npsn << " "
+             << dataguru[i].mapel << " "
+             << dataguru[i].waliKls << endl;
+    }
+
+    file.close();
+    cout << "Data guru berhasil dihapus.\n";
+    system("pause");
 }
 
 string gantiSpasi(string str) {
