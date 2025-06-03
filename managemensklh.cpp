@@ -34,6 +34,7 @@ string gantiSpasi(string str);
 string gantiUnscore(string str);
 void tarikData(int *jumlahData, int *jumlahData2);
 void quicksort(int low, int high);
+void quicksortKelas(int low, int high);
 void tmbhssw(int nbh);
 void tmbhgru(int nbh);
 void adminMenu();
@@ -118,15 +119,27 @@ void adminMenu(){
         cin >> pilmain;
         switch (pilmain){
             case 1 :
+                system("cls");
                 cout << "Ingin menambahkan berapa data siswa : ";
                 cin >> nbh;
-                tmbhssw(nbh);
+                if(nbh == 0){
+                    cout << "Tidak ada data yang ditambahkan\n";
+                    system("pause");
+                } else{
+                    tmbhssw(nbh);
+                }
             break;
             case 2 :
+                system("cls");
                 cout << "Ingin menambahkan berapa data guru : ";
                 cin >> tmbh;
-                cin.ignore();
-                tmbhgru(tmbh);
+                if(tmbh == 0){
+                    cout << "Tidak ada data yang ditambahkan\n";
+                    system("pause");
+                } else{
+                    cin.ignore();
+                    tmbhgru(tmbh);
+                }
             break;
             case 3 :
                 hapusDataSiswa();
@@ -318,6 +331,7 @@ void tmbhssw(int nbh){
         cout << "Ekonomi : ";
         cin >> datasiswa[nbh].nilai3;
     }
+    cout << endl;
     if(keFileSsw.is_open()){
         keFileSsw << gantiSpasi(datasiswa[nbh].nama) << " "
                   << datasiswa[nbh].nisn << " "
@@ -354,7 +368,7 @@ void tmbhgru(int tmbh){
     if(keFileSsw.is_open()){
         keFileSsw << gantiSpasi(dataguru[tmbh].nama) << " "
                   << dataguru[tmbh].npsn << " "
-                  << dataguru[tmbh].mapel << " "
+                  << gantiSpasi(dataguru[tmbh].mapel) << " "
                   << dataguru[tmbh].waliKls
                   << endl;
         keFileSsw.close();
@@ -478,22 +492,7 @@ void waliKelas(){
 }
 
 void tampilSemuaSiswaMipa(){
-    int low = 0, high = jumlahdata - 1;
-    if (low < high) {
-        string pivot = datasiswa[high].kelas;
-        int i = low - 1;
-        for (int j = low; j < high; j++) {
-            if (datasiswa[j].kelas < pivot) {
-                i++;
-                swap(datasiswa[i], datasiswa[j]);
-            }
-        }
-        swap(datasiswa[i+1], datasiswa[high]);
-
-        int pi = i + 1;
-        quicksort(low, pi - 1);
-        quicksort(pi + 1, high);
-    }
+    quicksortKelas(0, jumlahdata - 1);
     cout << setw(101) << setfill('=') << "\n" << setfill(' ');
     cout << "\n| " <<  left   << setw(5) << "NISN"  
          << "| " << setw(20) << "Nama" 
@@ -520,22 +519,7 @@ void tampilSemuaSiswaMipa(){
 }
 
 void tampilSemuaSiswaIps(){
-    int low = 0, high = jumlahdata - 1;
-    if (low < high) {
-        string pivot = datasiswa[high].kelas;
-        int i = low - 1;
-        for (int j = low; j < high; j++) {
-            if (datasiswa[j].kelas < pivot) {
-                i++;
-                swap(datasiswa[i], datasiswa[j]);
-            }
-        }
-        swap(datasiswa[i+1], datasiswa[high]);
-
-        int pi = i + 1;
-        quicksort(low, pi - 1);
-        quicksort(pi + 1, high);
-    }
+    quicksortKelas(0, jumlahdata - 1);
     cout << setw(101) << setfill('=') << "\n" << setfill(' ');
     cout << "\n| " <<  left   << setw(5) << "NISN"  
          << "| " << setw(20) << "Nama" 
@@ -711,54 +695,54 @@ string gantiUnscore(string str) {
 }
 
 void tarikData(int *jumlahData, int *jumlahData2){
-        ifstream keStruct(siswaData);
-        if(!keStruct.is_open()){
-            ofstream bikinDulu(siswaData);
-            bikinDulu.close(); 
-        }
-        
-        string tmpNama, tmpKls, tmpJrs;
-        float tmpNilai1, tmpNilai2, tmpNilai3;
-        int i = 0, tmpNisn;
-        while (keStruct >> tmpNama >> tmpNisn >> tmpKls >> tmpJrs >> tmpNilai1 >> tmpNilai2 >> tmpNilai3){
-            tmpNama = gantiUnscore(tmpNama);
-            datasiswa[i].nama = tmpNama;
-            datasiswa[i].nisn = tmpNisn;
-            datasiswa[i].kelas = tmpKls;
-            datasiswa[i].jurusan = tmpJrs;
-            datasiswa[i].nilai1 = tmpNilai1;
-            datasiswa[i].nilai2 = tmpNilai2;
-            datasiswa[i].nilai3 = tmpNilai3;
-            datasiswa[i].rerata = (tmpNilai1 + tmpNilai2 + tmpNilai3) / 3;
-            i++;
-            if(i>=totaldata) {
-                break;
-            }
-        }
-        keStruct.close();
-        *jumlahData = i; 
-        
-        ifstream keStructRt(guruData);
-        if(!keStructRt.is_open()){
-            ofstream bikinDulu(guruData);
-            bikinDulu.close(); 
-        }
-    
-        string  tmpMapel, tmpWalikls;
-        int j = 0, tmpNpsn;
-        while (keStructRt >> tmpNama >> tmpNpsn >> tmpMapel >> tmpWalikls){
-            dataguru[j].nama = gantiUnscore(tmpNama);
-            dataguru[j].npsn = tmpNpsn;
-            dataguru[j].mapel = tmpMapel;
-            dataguru[j].waliKls = tmpWalikls;
-            j++;
-            if(j>=totaldata) {
-                break;
-            }
-        }
-        keStructRt.close();
-        *jumlahData2 = j; 
+    ifstream keStruct(siswaData);
+    if(!keStruct.is_open()){
+        ofstream bikinDulu(siswaData);
+        bikinDulu.close(); 
     }
+        
+    string tmpNama, tmpKls, tmpJrs;
+    float tmpNilai1, tmpNilai2, tmpNilai3;
+    int i = 0, tmpNisn;
+    while (keStruct >> tmpNama >> tmpNisn >> tmpKls >> tmpJrs >> tmpNilai1 >> tmpNilai2 >> tmpNilai3){
+        tmpNama = gantiUnscore(tmpNama);
+        datasiswa[i].nama = tmpNama;
+        datasiswa[i].nisn = tmpNisn;
+        datasiswa[i].kelas = tmpKls;
+        datasiswa[i].jurusan = tmpJrs;
+        datasiswa[i].nilai1 = tmpNilai1;
+        datasiswa[i].nilai2 = tmpNilai2;
+        datasiswa[i].nilai3 = tmpNilai3;
+        datasiswa[i].rerata = (tmpNilai1 + tmpNilai2 + tmpNilai3) / 3;
+        i++;
+        if(i>=totaldata) {
+            break;
+        }
+    }
+    keStruct.close();
+    *jumlahData = i; 
+        
+    ifstream keStructRt(guruData);
+    if(!keStructRt.is_open()){
+        ofstream bikinDulu(guruData);
+        bikinDulu.close(); 
+    }
+    
+    string  tmpMapel, tmpWalikls;
+    int j = 0, tmpNpsn;
+    while (keStructRt >> tmpNama >> tmpNpsn >> tmpMapel >> tmpWalikls){
+        dataguru[j].nama = gantiUnscore(tmpNama);
+        dataguru[j].npsn = tmpNpsn;
+        dataguru[j].mapel = gantiUnscore(tmpMapel);
+        dataguru[j].waliKls = tmpWalikls;
+        j++;
+        if(j>=totaldata) {
+            break;
+        }
+    }
+    keStructRt.close();
+    *jumlahData2 = j; 
+}
 
 void quicksort(int low, int high) {
     if (low < high) {
@@ -775,5 +759,23 @@ void quicksort(int low, int high) {
         int pi = i + 1;
         quicksort(low, pi - 1);
         quicksort(pi + 1, high);
+    }
+}
+
+void quicksortKelas(int low, int high) {
+    if (low < high) {
+        string pivot = datasiswa[high].kelas;
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (datasiswa[j].kelas < pivot) {
+                i++;
+                swap(datasiswa[i], datasiswa[j]);
+            }
+        }
+        swap(datasiswa[i+1], datasiswa[high]);
+
+        int pi = i + 1;
+        quicksortKelas(low, pi - 1);
+        quicksortKelas(pi + 1, high);
     }
 }
