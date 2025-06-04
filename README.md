@@ -1,5 +1,5 @@
 # management-sekolah
-# E-rapor
+# Damen SMA Konoha
 
 ![Repo Size](https://img.shields.io/github/repo-size/Code0Zero2/management-sekolah?style=flat-square)
 ![License](https://img.shields.io/github/license/Code0Zero2/management-sekolah?style=flat-square)
