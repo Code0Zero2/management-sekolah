@@ -57,7 +57,7 @@ int main(){
     int coba = 3;
     do{
         system("cls");
-        cout << "Selamat Datang di E-rapor Akademi Konoha\n";
+        cout << "Selamat Datang di Damen SMA Konoha\n";
         cout << "Login sebagai : \n";
         cout << "1. Admin\n";
         cout << "2. User\n";
@@ -153,7 +153,7 @@ void adminMenu(){
                 return;
             break;
             case 6 :
-                cout << "Terimakasih Sudah Menggunakan E-rapor\n";
+                cout << "Terimakasih Sudah Menggunakan Damen\n";
                 exit(0);
             break;
             default:
@@ -188,7 +188,7 @@ void userMenu(){
                 return;
             break;
             case 4 :
-                cout << "Terimakasih Sudah Menggunakan E-rapor\n";
+                cout << "Terimakasih Sudah Menggunakan Damen\n";
                 exit(0);
             break;
             default :
@@ -226,7 +226,7 @@ void siswaMenu(){
                 return;
             break;
             case 4 : 
-                cout << "Terimakasih Sudah Menggunakan E-rapor\n";
+                cout << "Terimakasih Sudah Menggunakan Damen\n";
                 exit(0);
             break;
             default :
@@ -285,7 +285,7 @@ void guruMenu(){
                 return;
             break;
             case 5 : 
-                cout << "Terimakasih Sudah Menggunakan E-rapor\n";
+                cout << "Terimakasih Sudah Menggunakan Damen\n";
                 exit(0);
             break;
             default :
@@ -666,8 +666,9 @@ void hapusDataGuru(){
     for(int i = 0; i < jumlahdataguru; i++) {
         file << gantiSpasi(dataguru[i].nama) << " "
              << dataguru[i].npsn << " "
-             << dataguru[i].mapel << " "
-             << dataguru[i].waliKls << endl;
+             << gantiSpasi(dataguru[i].mapel) << " "
+             << dataguru[i].waliKls << " "
+             << dataguru[i].password << endl;
     }
 
     file.close();
@@ -721,15 +722,15 @@ void tarikData(int *jumlahData, int *jumlahData2){
     keStruct.close();
     *jumlahData = i; 
         
-    ifstream keStructRt(guruData);
-    if(!keStructRt.is_open()){
+    ifstream keStructGr(guruData);
+    if(!keStructGr.is_open()){
         ofstream bikinDulu(guruData);
         bikinDulu.close(); 
     }
     
-    string  tmpMapel, tmpWalikls;
+    string tmpMapel, tmpWalikls;
     int j = 0, tmpNpsn, tmpPassword;
-    while (keStructRt >> tmpNama >> tmpNpsn >> tmpMapel >> tmpWalikls >> tmpPassword){
+    while (keStructGr >> tmpNama >> tmpNpsn >> tmpMapel >> tmpWalikls >> tmpPassword){
         dataguru[j].nama = gantiUnscore(tmpNama);
         dataguru[j].npsn = tmpNpsn;
         dataguru[j].mapel = gantiUnscore(tmpMapel);
@@ -740,7 +741,7 @@ void tarikData(int *jumlahData, int *jumlahData2){
             break;
         }
     }
-    keStructRt.close();
+    keStructGr.close();
     *jumlahData2 = j; 
 }
 
