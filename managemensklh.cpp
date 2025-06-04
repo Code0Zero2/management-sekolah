@@ -27,6 +27,7 @@ struct guru{
     int npsn;
     string mapel;
     string waliKls;
+    int password;
 }; 
 guru dataguru[totaldata];
 
@@ -36,7 +37,7 @@ void tarikData(int *jumlahData, int *jumlahData2);
 void quicksort(int low, int high);
 void quicksortKelas(int low, int high);
 void tmbhssw(int nbh);
-void tmbhgru(int nbh);
+void tmbhgru(int tmbh);
 void adminMenu();
 void siswaMenu();
 void waliKelas();
@@ -48,6 +49,7 @@ void tampilSemuaSiswaMipa();
 void tampilSemuaSiswaIps();
 void hapusDataSiswa();
 void hapusDataGuru();
+void loginGuru();
 
 int main(){
     int pilmain;
@@ -82,7 +84,7 @@ int main(){
                             system("cls");
                             cout << "Kesempatan Habis\n";
                             cout << "Coba beberapa saat lagi\n";
-                            system("exit");
+                            exit(0);
                         }   
                     }
                     system("pause");
@@ -114,7 +116,7 @@ void adminMenu(){
         cout << "3. Menghapus data siswa\n";
         cout << "4. Menghapus data guru\n";
         cout << "5. Kembali ke login menu \n";
-        cout << "6. Exit\n";
+        cout << "6. exit\n";
         cout << "Masukkan pilihan : ";
         cin >> pilmain;
         switch (pilmain){
@@ -180,7 +182,7 @@ void userMenu(){
                 siswaMenu();
             break;
             case 2 :
-                guruMenu();
+                loginGuru();
             break;
             case 3 :
                 return;
@@ -241,10 +243,10 @@ void guruMenu(){
     do{
         system("cls");
         cout << "---- Guru ----\n";
-        cout << "1. menampilkan data seluruh siswa\n";
-        cout << "2. menampilkan data guru\n";
-        cout << "3. menampilkan data siswa kelas diampu\n";
-        cout << "4. kembali ke menu utama\n";
+        cout << "1. Menampilkan data seluruh siswa\n";
+        cout << "2. Menampilkan data guru\n";
+        cout << "3. Menampilkan data siswa kelas diampu\n";
+        cout << "4. Kembali ke menu utama\n";
         cout << "5. exit\n";
         cout << "masukkan pilihan : ";
         cin >> pilmain;
@@ -358,6 +360,8 @@ void tmbhgru(int tmbh){
     getline(cin, dataguru[tmbh].nama);
     cout << "NPSN : ";
     cin >> dataguru[tmbh].npsn;
+    cout << "Masukkan Password (5 digit angka): ";
+    cin >> dataguru[tmbh].password;
     cout << "Matapelajaran diampu : ";
     cin.ignore();
     getline(cin, dataguru[tmbh].mapel);
@@ -369,7 +373,8 @@ void tmbhgru(int tmbh){
         keFileSsw << gantiSpasi(dataguru[tmbh].nama) << " "
                   << dataguru[tmbh].npsn << " "
                   << gantiSpasi(dataguru[tmbh].mapel) << " "
-                  << dataguru[tmbh].waliKls
+                  << dataguru[tmbh].waliKls << " "
+                  << dataguru[tmbh].password
                   << endl;
         keFileSsw.close();
     }
@@ -546,7 +551,7 @@ void tampilSemuaSiswaIps(){
 }
 
 void hapusDataSiswa() {
-    tarikData(&jumlahdata, &jumlahdataguru); // Pastikan data terbaru sudah ditarik
+    tarikData(&jumlahdata, &jumlahdataguru); 
     
     if (jumlahdata == 0) {
         cout << "Tidak ada data siswa.\n";
@@ -554,7 +559,6 @@ void hapusDataSiswa() {
         return;
     }
 
-    // Tampilkan daftar siswa
     cout << "\n==== DAFTAR DATA SISWA ====\n";
     cout << "============================================================\n";
     cout << "| " << left << setw(3) << "No"  
@@ -583,13 +587,11 @@ void hapusDataSiswa() {
         return;
     }
 
-    // Geser data setelah yang dihapus
     for(int i = nomor-1; i < jumlahdata-1; i++) {
         datasiswa[i] = datasiswa[i+1];
     }
     jumlahdata--;
 
-    // Tulis ulang seluruh data ke file
     ofstream file(siswaData);
     if (!file.is_open()) {
         cout << "Gagal membuka file data siswa.\n";
@@ -613,7 +615,7 @@ void hapusDataSiswa() {
 }
 
 void hapusDataGuru(){
-    tarikData(&jumlahdata, &jumlahdataguru); // Pastikan data terbaru sudah ditarik
+    tarikData(&jumlahdata, &jumlahdataguru);
     
     if (jumlahdataguru == 0) {
         cout << "Tidak ada data guru.\n";
@@ -621,7 +623,6 @@ void hapusDataGuru(){
         return;
     }
 
-    // Tampilkan daftar guru
     cout << "\n==== DAFTAR DATA GURU ====\n";
     cout << "======================================================================\n";
     cout << "| " << left << setw(3) << "No"  
@@ -650,13 +651,11 @@ void hapusDataGuru(){
         return;
     }
 
-    // Geser data setelah yang dihapus
     for(int i = nomor-1; i < jumlahdataguru-1; i++) {
         dataguru[i] = dataguru[i+1];
     }
     jumlahdataguru--;
 
-    // Tulis ulang seluruh data ke file
     ofstream file(guruData);
     if (!file.is_open()) {
         cout << "Gagal membuka file data guru.\n";
@@ -729,12 +728,13 @@ void tarikData(int *jumlahData, int *jumlahData2){
     }
     
     string  tmpMapel, tmpWalikls;
-    int j = 0, tmpNpsn;
-    while (keStructRt >> tmpNama >> tmpNpsn >> tmpMapel >> tmpWalikls){
+    int j = 0, tmpNpsn, tmpPassword;
+    while (keStructRt >> tmpNama >> tmpNpsn >> tmpMapel >> tmpWalikls >> tmpPassword){
         dataguru[j].nama = gantiUnscore(tmpNama);
         dataguru[j].npsn = tmpNpsn;
         dataguru[j].mapel = gantiUnscore(tmpMapel);
         dataguru[j].waliKls = tmpWalikls;
+        dataguru[j].password = tmpPassword;
         j++;
         if(j>=totaldata) {
             break;
@@ -778,4 +778,44 @@ void quicksortKelas(int low, int high) {
         quicksortKelas(low, pi - 1);
         quicksortKelas(pi + 1, high);
     }
+}
+
+void loginGuru() {
+    tarikData(&jumlahdata, &jumlahdataguru); 
+    
+    int npsn, password;
+    int coba = 3;
+    bool loginBerhasil = false;
+    
+    do {
+        system("cls");
+        cout << "==== LOGIN GURU ====\n";
+        cout << "Masukkan NPSN: ";
+        cin >> npsn;
+        cout << "Masukkan Password (5 digit): ";
+        cin >> password;
+        
+        for(int i = 0; i < jumlahdataguru; i++) {
+            if(dataguru[i].npsn == npsn && dataguru[i].password == password) {
+                loginBerhasil = true;
+                break;
+            }
+        }
+        
+        if(loginBerhasil) {
+            cout << "Login berhasil!\n";
+            system("pause");
+            guruMenu();
+            return;
+        } else {
+            coba--;
+            cout << "NPSN atau password salah!\n";
+            if(coba > 0) {
+                cout << "Sisa percobaan: " << coba << endl;
+            } else {
+                cout << "Anda telah melebihi batas percobaan.\n";
+            }
+            system("pause");
+        }
+    } while(coba > 0);
 }
